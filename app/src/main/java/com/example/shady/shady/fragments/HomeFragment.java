@@ -40,7 +40,6 @@ public class HomeFragment extends Fragment implements HttpGetDataListener,View.O
     private String[] welcome_array;
     private double currentTime=0, oldTime = 0;
     private View view;
-    private String time;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

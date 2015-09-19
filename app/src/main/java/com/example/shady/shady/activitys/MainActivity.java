@@ -27,6 +27,7 @@ import com.example.shady.shady.AccessTokenKeeper;
 import com.example.shady.shady.R;
 import com.example.shady.shady.fragments.HomeFragment;
 import com.example.shady.shady.Constants;
+import com.example.shady.shady.fragments.ImageFragment;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -41,7 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MainActivity extends FragmentActivity implements AdapterView.OnItemClickListener{
+public class MainActivity extends FragmentActivity implements AdapterView.OnItemClickListener {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ArrayList<String> menuLists;
@@ -50,39 +51,49 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
     private String mTitle;
     private LinearLayout mlinearlayout;
     private Fragment homeFragment;
+    private Fragment imageFragment;
     private Button mCurrentClickedButton;
     private LoginoutButton mLoginoutBtnDefault;
     FragmentManager fm = getFragmentManager();
-    /** 登陆认证对应的listener */
+    /**
+     * 登陆认证对应的listener
+     */
     private AuthListener mLoginListener = new AuthListener();
-    /** 登出操作对应的listener */
+    /**
+     * 登出操作对应的listener
+     */
     private LogOutRequestListener mLogoutListener = new LogOutRequestListener();
     private AuthInfo mAuthInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTitle = (String) getTitle();
 
-        mlinearlayout= (LinearLayout) findViewById(R.id.mlinearlayout);
+        mlinearlayout = (LinearLayout) findViewById(R.id.mlinearlayout);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         menuLists = new ArrayList<String>();
         //创建授权认证信息
-        mAuthInfo=new AuthInfo(this,Constants.APP_KEY,Constants.REDIRECT_URL,Constants.SCOPE);
+        mAuthInfo = new AuthInfo(this, Constants.APP_KEY, Constants.REDIRECT_URL, Constants.SCOPE);
         mLoginoutBtnDefault = (LoginoutButton) findViewById(R.id.login_out_button_default);
         mLoginoutBtnDefault.setWeiboAuthInfo(mAuthInfo, mLoginListener);
         mLoginoutBtnDefault.setLogoutListener(mLogoutListener);
 //        for (int i = 0; i < 5; i++)
 //            menuLists.add("shadyApp" + i);
-        menuLists.add("首页");menuLists.add("地图");menuLists.add("图片");menuLists.add("视频");menuLists.add("关于我们");
+        menuLists.add("首页");
+        menuLists.add("地图");
+        menuLists.add("图片");
+        menuLists.add("视频");
+        menuLists.add("关于我们");
         initFragments();
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, menuLists);
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(this);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-               R.drawable.ic_drawer, R.string.drawer_open,
+                R.drawable.ic_drawer, R.string.drawer_open,
                 R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -127,9 +138,9 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 
         if (mCurrentClickedButton != null) {
             if (mCurrentClickedButton instanceof LoginButton) {
-                ((LoginButton)mCurrentClickedButton).onActivityResult(requestCode, resultCode, data);
+                ((LoginButton) mCurrentClickedButton).onActivityResult(requestCode, resultCode, data);
             } else if (mCurrentClickedButton instanceof LoginoutButton) {
-                ((LoginoutButton)mCurrentClickedButton).onActivityResult(requestCode, resultCode, data);
+                ((LoginoutButton) mCurrentClickedButton).onActivityResult(requestCode, resultCode, data);
             }
         }
 
@@ -197,38 +208,39 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
         @Override
         public void onClick(View v) {
             if (v instanceof Button) {
-                mCurrentClickedButton = (Button)v;
+                mCurrentClickedButton = (Button) v;
             }
         }
     };
 
-        private void initFragments() {
-            homeFragment = new HomeFragment();
-            fm.beginTransaction().replace(R.id.fragment_layout, homeFragment)
-                    .commit();
-        }
+    private void initFragments() {
+        homeFragment = new HomeFragment();
+        imageFragment = new ImageFragment();
+        fm.beginTransaction().replace(R.id.fragment_layout, homeFragment)
+                .commit();
+    }
 
 
-        @Override
-        public boolean onPrepareOptionsMenu(Menu menu) {
-            boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mlinearlayout);
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        boolean isDrawerOpen = mDrawerLayout.isDrawerOpen(mlinearlayout);
 //        menu.findItem(R.id.action_websearch).setVisible(!isDrawerOpen);
-            return super.onPrepareOptionsMenu(menu);
-        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.main, menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            if (mDrawerToggle.onOptionsItemSelected(item)) {
-                return true;
-            }
-            switch (item.getItemId()) {
+        switch (item.getItemId()) {
 //            case R.id.action_websearch:
 //                Intent intent = new Intent();
 //                intent.setAction("android.intent.action.VIEW");
@@ -236,33 +248,34 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
 //                intent.setData(uri);
 //                startActivity(intent);
 //                break;
-            }
-            return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
+    }
 
-        @Override
-        protected void onPostCreate(Bundle savedInstanceState) {
-            super.onPostCreate(savedInstanceState);
-            mDrawerToggle.syncState();
-        }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
 
-        @Override
-        public void onConfigurationChanged(Configuration newConfig) {
-            super.onConfigurationChanged(newConfig);
-            mDrawerToggle.onConfigurationChanged(newConfig);
-        }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
 
-        @Override
-        public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-                                long arg3) {
-            switch (position) {
-                case 0:
-                    fm.beginTransaction().replace(R.id.fragment_layout, homeFragment)
-                            .commit();
-                    break;
-                case 1:
-                    break;
-            }
-            mDrawerLayout.closeDrawer(mlinearlayout);
+    @Override
+    public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                            long arg3) {
+        switch (position) {
+            case 0:
+                fm.beginTransaction().replace(R.id.fragment_layout, homeFragment)
+                        .commit();
+                break;
+            case 2:
+                fm.beginTransaction().replace(R.id.fragment_layout, imageFragment).commit();
+                break;
         }
+        mDrawerLayout.closeDrawer(mlinearlayout);
+    }
 }
