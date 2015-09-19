@@ -20,6 +20,30 @@
         android:layout_gravity="start"
         android:background="@drawable/background"
         android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:padding="16dp">
+            <TextView
+                android:id="@+id/id_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="http://www.sina.com"/>
+
+            <TextView
+                android:id="@+id/id_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/id_link"
+                android:text="fengxudong"/>
+
+            <ImageView
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_above="@id/id_username"
+                android:src="@drawable/icon"/>
+        </RelativeLayout>
         <ListView
             android:id="@+id/left_drawer"
             android:layout_width="240dp"
@@ -28,11 +52,16 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp" >
         </ListView>
-        <Button
-            android:background="#0523CC"
-            android:layout_width="match_parent"
+        <!-- 默认效果，其 style 为： @style/com_sina_weibo_sdk_loginview_default_style -->
+        <com.sina.weibo.sdk.widget.LoginoutButton
+            android:id="@+id/login_out_button_default"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login"/>
+            style="@style/com_sina_weibo_sdk_loginview_default_style" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/logout_button"/>
     </LinearLayout>
 
 
