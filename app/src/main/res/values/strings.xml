@@ -25,6 +25,7 @@
     <string name="weibosdk_demo_logout_success">logout_success</string>
     <string name="weibosdk_demo_logout_failed">logout_failed</string>
     <string name="send">send</string>
+    <string name="locate">定位</string>
     <string-array name="welcome_tips">
 
     <item>主人，奴婢在此等候多时了</item>

@@ -28,6 +28,7 @@ import com.example.shady.shady.R;
 import com.example.shady.shady.fragments.HomeFragment;
 import com.example.shady.shady.Constants;
 import com.example.shady.shady.fragments.ImageFragment;
+import com.example.shady.shady.fragments.MapFragment;
 import com.sina.weibo.sdk.auth.AuthInfo;
 import com.sina.weibo.sdk.auth.Oauth2AccessToken;
 import com.sina.weibo.sdk.auth.WeiboAuthListener;
@@ -52,6 +53,7 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
     private LinearLayout mlinearlayout;
     private Fragment homeFragment;
     private Fragment imageFragment;
+    private Fragment mapFragment;
     private Button mCurrentClickedButton;
     private LoginoutButton mLoginoutBtnDefault;
     FragmentManager fm = getFragmentManager();
@@ -216,6 +218,7 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
     private void initFragments() {
         homeFragment = new HomeFragment();
         imageFragment = new ImageFragment();
+        mapFragment=new MapFragment();
         fm.beginTransaction().replace(R.id.fragment_layout, homeFragment)
                 .commit();
     }
@@ -274,6 +277,10 @@ public class MainActivity extends FragmentActivity implements AdapterView.OnItem
                 break;
             case 2:
                 fm.beginTransaction().replace(R.id.fragment_layout, imageFragment).commit();
+                break;
+
+            case 1:
+                fm.beginTransaction().replace(R.id.fragment_layout, mapFragment).commit();
                 break;
         }
         mDrawerLayout.closeDrawer(mlinearlayout);
